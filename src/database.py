@@ -107,6 +107,32 @@ class Database:
         finally:
             conn.close()
 
+    def get_all(self, semester: Optional[str] = None) -> List[dict]:
+        """获取所有成绩记录（列表形式，可选按学期过滤）
+
+        参数:
+            semester: 可选，指定学期如 "2025-2026-2"，不传则返回全部
+
+        返回:
+            成绩记录字典列表，按学期降序、ID 升序排列
+        """
+        conn = self._get_conn()
+        try:
+            if semester:
+                rows = conn.execute(
+                    "SELECT * FROM scores WHERE semester = ? ORDER BY semester DESC, id",
+                    (semester,),
+                ).fetchall()
+            else:
+                rows = conn.execute(
+                    "SELECT * FROM scores ORDER BY semester DESC, id"
+                ).fetchall()
+            return [dict(r) for r in rows]
+        except Exception as e:
+            raise DatabaseError(f"查询成绩失败: {e}")
+        finally:
+            conn.close()
+
     def upsert(self, item: ScoreItem) -> bool:
         """插入或更新一条成绩记录
 

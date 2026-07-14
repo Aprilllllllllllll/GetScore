@@ -130,6 +130,14 @@ def cmd_test():
         print("❌ 测试通知发送失败，请检查配置")
 
 
+def cmd_view():
+    """查看本地已存储的成绩"""
+    from src.viewer import print_scores
+
+    semester = _parse_semester_arg()
+    print_scores(semester=semester)
+
+
 def _parse_semester_arg():
     """从命令行参数中提取 --semester 值"""
     for i, arg in enumerate(sys.argv):
@@ -147,6 +155,8 @@ def print_usage():
     print("  python main.py once                         单次查询全部学期成绩")
     print("  python main.py once --semester 2025-2026-2  单次查询指定学期成绩")
     print("  python main.py schedule                     启动定时轮询（全部学期）")
+    print("  python main.py view                         查看本地已存储的成绩")
+    print("  python main.py view --semester 2025-2026-2  查看本地指定学期成绩")
     print("  python main.py test                         测试通知推送通道")
     print("")
     print("学期格式: 2025-2026-1（第一学期）或 2025-2026-2（第二学期）")
@@ -167,6 +177,7 @@ def main():
     commands = {
         "once": cmd_once,
         "schedule": cmd_schedule,
+        "view": cmd_view,
         "test": cmd_test,
         "help": print_usage,
         "--help": print_usage,

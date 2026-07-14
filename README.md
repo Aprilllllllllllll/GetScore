@@ -53,12 +53,19 @@ POLL_INTERVAL_MINUTES=30
 # 单次查询全部学期成绩
 bash scripts/run.sh
 
+# 查看本地已存储的成绩（表格形式，按学期分组，含统计信息）
+bash scripts/view.sh
+
 # 或直接使用 python
 python main.py once                           # 查询全部学期
 python main.py once --semester 2025-2026-2    # 查询指定学期
 python main.py schedule                       # 启动定时轮询（后台持续运行）
+python main.py view                           # 查看本地已存储的成绩
+python main.py view --semester 2025-2026-2    # 查看指定学期的成绩
 python main.py test                           # 测试通知推送通道
 ```
+
+Windows 用户也可以直接双击 `getscore.bat`，一键完成查询并展示最新成绩。
 
 学期格式：`2025-2026-1`（第一学期）或 `2025-2026-2`（第二学期）。
 
@@ -73,6 +80,7 @@ GetScore/
 │   ├── setup.sh            # 环境初始化脚本
 │   ├── run.sh              # 单次查询脚本
 │   ├── schedule.sh         # 定时轮询脚本
+│   ├── view.sh             # 查看本地成绩脚本
 │   └── test.sh             # 通知测试脚本
 ├── src/
 │   ├── models.py           # 数据模型（ScoreItem / ScoreChange / SemesterStats）
@@ -82,6 +90,7 @@ GetScore/
 │   ├── parser.py           # 成绩解析与挂科判断
 │   ├── database.py         # SQLite 存储、差异检测与统计
 │   ├── notifier.py         # 消息推送（Server酱 / 控制台）
+│   ├── viewer.py           # 本地成绩的表格化展示
 │   └── scheduler.py        # APScheduler 定时轮询编排
 ├── data/
 │   └── scores.db           # SQLite 数据库（自动生成）
